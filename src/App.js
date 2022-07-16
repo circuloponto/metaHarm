@@ -1,10 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import Colorwheel from './components/colorwheel'
 function App() {
   return (
     <div className="App">
-
+      <Colorwheel />
     </div>
   );
 }
