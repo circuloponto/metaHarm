@@ -9,7 +9,7 @@ export class Hypercube extends Component {
   } */
   shouldComponentUpdate(nextProps, nextState) {
     //if (nextProps !== this.props) {
-    if (this.props.isToReRender) {
+    if (nextProps.isToReRender) {
       ////console.log('its not equal')
       ////console.log(nextProps)
       ////console.log(this.props)

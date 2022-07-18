@@ -426,6 +426,94 @@ class Colorwheel extends Component {
       subIntervals: orderedColors
     })
   }
+  rotate = (e) => {
+    const wrapAroundIndex = (arr, i, n) => (i % n + n) % n;//arr[(i % n + n) % n];
+    var keyColor = e.target.getAttribute("color") // Ebmaj,Cmaj,Amaj,Gbmaj,
+    var direction = e.target.getAttribute("direction") // Cmaj,Ebmaj,Gbmaj,Amaj
+    //console.log(keyColor)
+    //console.log(direction)
+    const getKey = (status) => {
+      return {
+        'yellow': this.state.yellowRotation,
+        'blue': this.state.blueRotation,
+        'red': this.state.redRotation,
+      }[status]
+    }
+    const slug = keyColor + 'Rotation'
+    //console.log(slug)
+    var root = getKey(keyColor)
+    //var roots = this.state.currKeyRotation
+    var roots = this.state[slug]
+    //console.log(roots)
+    //console.log(root[0])
+    var traveltoRoot;
+
+    var prev;
+    var next;
+    var rotatedOrder;
+    if (direction === 'L') {
+
+      var newOrderStart = [...roots].splice(1, roots.length - 1)
+      rotatedOrder = [...newOrderStart, roots[0],]
+      //console.log(newOrderStart)
+      //console.log(rotatedOrder) //É AQUI TB mudar para a root no inicio
+      prev = rotatedOrder[3]
+      next = rotatedOrder[1]
+      traveltoRoot = rotatedOrder[0]
+      // this.setState({
+      //   isToReRender: false,
+      // }, () => this.setState({
+      //   isToReRender: false,
+      // }))
+    } else {
+      traveltoRoot = root[3]
+      var newOrderEnd = [...roots].splice(3, 1)
+      rotatedOrder = [...newOrderEnd, roots[0], roots[1], roots[2],]
+      prev = rotatedOrder[1]
+      next = rotatedOrder[3]
+      //traveltoRoot = rotatedOrder[0]
+      //console.log(newOrderEnd)
+      //console.log(rotatedOrder)
+      //console.log('prev', prev)
+      //console.log('next', next)
+      // this.setState({
+      //   isToReRender: false,
+      // }, () => this.setState({
+      //   isToReRender: false,
+      // }))
+
+    }
+
+
+    let currPosition = document.querySelector('.cube').getAttribute('data-angle')
+    //console.log('currPosition: ', currPosition)
+    if (e.target.getAttribute('direction') === 'L') {
+      currPosition = Number(currPosition) + 90
+
+      //console.log(currPosition)
+    } else {
+      currPosition = currPosition - 90;
+      //console.log(currPosition)
+    }
+    let cubeRef = document.querySelector('.cube')
+    //cubeRef.style.setProperty('--el', `${this.state.cubeRotation}deg`);
+    this.setState({
+      isToReRender: false,
+      [slug]: rotatedOrder,
+      currKeyRotation: rotatedOrder,
+      cubeRotation: currPosition,
+      prevRoot: prev + 'maj',
+      nextRoot: next + 'maj',
+      //curRoot: prevRoot,
+      currKeyRotation: rotatedOrder,
+      chosenRoot: traveltoRoot
+    })
+    //cubeRef.setAttribute("data-angle", `${currPosition}`);
+
+
+
+
+  }
   render() {
     const getHex = (status) => {
       return {
@@ -486,7 +574,7 @@ class Colorwheel extends Component {
     }
     return (
       <>
-        <div size={'full'} className={theChord ? 'container ' : 'container '}>
+        <div size={'full'} className={theChord ? 'container containerHalf' : 'container '}>
           {/* //aqui */}
 
 
@@ -667,7 +755,7 @@ class Colorwheel extends Component {
                 </g>
               </svg>
 
-              {this.state.chosenRoot && this.state.quality ?
+              {this.state.chosenRoot && this.state.quality /* && this.state.isToReRender */ ?
                 <>
                   <Orbiter subIntervals={this.state.subIntervals[2]} notes={preRoll[2]} />
                   <div
@@ -717,7 +805,7 @@ class Colorwheel extends Component {
           </div>
         </div >
 
-        {/*  {   <div className='hyperContainer'>
+        {<div className='hyperContainer'>
           {theChord ? (
             <>
 
@@ -798,7 +886,7 @@ class Colorwheel extends Component {
               </div>
             </>
           ) : null}
-        </div>} */}
+        </div>}
 
 
       </>
