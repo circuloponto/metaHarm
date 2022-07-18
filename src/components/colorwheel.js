@@ -45,7 +45,32 @@ class Colorwheel extends Component {
       subIntervals: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],]
     }
   }
+  componentDidMount() {
+    /*  if (this.state.allowExtensions) {
+       document.querySelector('.deg').addEventListener("click", this.addExtensions);
+       document.querySelector('.deg').addEventListener("contextmenu", this.addExtensions);
+     } else {
+ 
+       document.querySelector('.deg').addEventListener("click", this.root);
+       document.querySelector('.deg').addEventListener("contextmenu", this.root);
+     } */
+    //document.querySelector('.deg').addEventListener("click", this.root);
+    document.addEventListener("click", this.root);
+    document.addEventListener("contextmenu", this.root);
 
+  }
+
+  componentWillUnmount() {
+    /*  if (this.state.allowExtensions) {
+       document.querySelector('.deg').removeEventListener("click", this.addExtensions);
+       document.querySelector('.deg').removeEventListener("contextmenu", this.addExtensions);
+     } else {
+       document.querySelector('.deg').removeEventListener("click", this.root);
+       document.querySelector('.deg').removeEventListener("contextmenu", this.root);
+     } */
+    document.removeEventListener("click", this.root);
+    document.removeEventListener("contextmenu", this.root);
+  }
 
   quality = (e) => {
     let quality = e.target.getAttribute("data-quality")
@@ -245,18 +270,20 @@ class Colorwheel extends Component {
     //const capitalColr = colr.charAt(0).toUpperCase() + colr.slice(1)
     var whichOne;
     var quality;
-    ////console.log(capitalColr)
-    var target = e.target.getAttribute("data-root") + 'maj'
-    //console.log("Ltarget", target);
-    ////console.log("Left click");
-    whichOne = 'quality' + colr + 'Maj'
-    //////console.log('whichOneMaj: ', whichOne)
-    quality = 'maj';
-    /* if (e.type === "click") {
-     
-    } else {
-      //console.log('deprecated!')
-    } */
+    if (e.type === "click") {
+      var target = e.target.getAttribute("data-root") + 'maj'
+      //console.log("Ltarget", target);
+      //console.log("Left click");
+      whichOne = 'quality' + colr + 'Maj'
+      ////console.log('whichOneMaj: ', whichOne)
+      quality = 'maj';
+    } else if (e.type === "contextmenu") {
+      var target = e.target.getAttribute("data-root") + 'min'
+      console.log("Right click");
+      whichOne = 'quality' + colr + 'Min'
+      ////console.log('whichOneMin: ', whichOne)
+      quality = 'min'
+    }
 
 
     const root = e.target.getAttribute("data-root"); ////console.log(root)
@@ -338,7 +365,7 @@ class Colorwheel extends Component {
     })
   }
   root = (e) => {
-    //e.preventDefault();
+    e.preventDefault();
 
     var check = this.state.allowExtensions
     ////console.log('check', check)
@@ -454,59 +481,80 @@ class Colorwheel extends Component {
       var inte = preRoll[2][3]
       // console.log('inte', inte)
       // console.log('preRoll[2]', preRoll[2])
-      console.log('preRoll[2]9', preRoll[2][9])
+      //console.log('preRoll', preRoll)
 
     }
     return (
       <>
-        <div size={'full'} className={theChord ? 'container containerHalf' : 'container'}>
+        <div size={'full'} className={theChord ? 'container ' : 'container '}>
+          {/* //aqui */}
 
 
 
 
           <div className="lines">
-            <div onClick={this.resetRoot} className='resetBtn'>
+            {/*  <div onClick={this.resetRoot} className='resetBtn'>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
 
-            </div>
-            {theChord ? (<div onClick={this.allowExtensions} className='addExtensions'>
+            </div> */}
+            {/* {theChord ? (<div onClick={this.allowExtensions} className='addExtensions'>
               +
-            </div>) : null}
+            </div>) : null} */}
           </div>
 
           {this.state.chosenRoot && this.state.quality ?
             <div className="functionTriangle">
               {preRoll ? (
-                <div className="selectionDisplayer" >
-                  <div style={{ background: `${rootColour}` }}>
+                <>
+                  <div id='writtenFunction'>
 
-                    <div>{this.state.chosenRoot}</div>
-                    <div style={{ minWidth: '10px' }}></div>
-                    <div>{this.state.quality === 'maj' ? 'maj 6' : 'min 7'}</div>
-
+                    <div
+                      style={{ background: preRoll[0][10][0] }}
+                      className='redFunction'>{preRoll[0][6][1]}</div>
+                    <div
+                      style={{ background: preRoll[1][10][0] }}
+                      className='blueFunction'>{preRoll[1][6][1]}</div>
+                    <div
+                      style={{ background: preRoll[2][10][0] }}
+                      className='yellowFunction'>{preRoll[2][6][1]}</div>
+                  </div>
+                  <div onClick={this.resetRoot} className='resetBtn'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
 
                   </div>
-                  {allow ? (
-                    <div className='extensionBox'>
-                      {addedExt.map((note, i) => {
-                        return (
 
-                          <div style={{ background: `${this.state.addedTuple[i][1]}` }}
-                            key={i} className='added'><div>{note}</div>
-                          </div>)
-                      })}</div>
-                  ) : (
-                    null
-                  )
-                  }
+                  <div className="selectionDisplayer" >
+                    <div style={{ background: `${rootColour}` }}>
 
-                </div>) : null}
+                      <div>{this.state.chosenRoot}</div>
+                      <div style={{ minWidth: '10px' }}></div>
+                      <div>{this.state.quality === 'maj' ? 'maj 6' : 'min 7'}</div>
+
+
+                    </div>
+                    {allow ? (
+                      <div className='extensionBox'>
+                        {addedExt.map((note, i) => {
+                          return (
+
+                            <div style={{ background: `${this.state.addedTuple[i][1]}` }}
+                              key={i} className='added'><div>{note}</div>
+                            </div>)
+                        })}</div>
+                    ) : (
+                      null
+                    )
+                    }
+
+                  </div></>) : null}
               <div id="functionPurple"
            /* style={{ background: preRoll[0][7] }} */>
                 <div>{preRoll[0][6][0]}</div>
-                <div className='writtenFunction'>{preRoll[0][6][1]}</div>
+
 
               </div>
               <div id="functionOrange"
@@ -520,6 +568,7 @@ class Colorwheel extends Component {
             </div>
             : null
           }
+
           <div className="purple_red">
             <div className="cornerstone red">
               <svg className="redToPurple" width="50px" height="305px" viewBox="0 0 50 305" >
@@ -551,10 +600,10 @@ class Colorwheel extends Component {
                     className={preRoll[0][3][3] === 'root' ? 'deg deg4 selectedRoot' : 'deg deg4'}>{red[3]}</div>
                 </> :
                 <> {/* E Db Bb G */}
-                  <div data-color="red" data-root={red[0]} onClick={this.root} className='deg deg1'>{red[0]}</div>
-                  <div data-color="red" data-root={red[1]} onClick={this.root} className='deg deg2'>{red[1]}</div>
-                  <div data-color="red" data-root={red[2]} onClick={this.root} className='deg deg3'>{red[2]}</div>
-                  <div data-color="red" data-root={red[3]} onClick={this.root} className='deg deg4'>{red[3]}</div>
+                  <div data-color="red" data-root={red[0]} onClick={this.root} onContextMenu={this.root} className='deg deg1'>{red[0]}</div>
+                  <div data-color="red" data-root={red[1]} onClick={this.root} onContextMenu={this.root} className='deg deg2'>{red[1]}</div>
+                  <div data-color="red" data-root={red[2]} onClick={this.root} onContextMenu={this.root} className='deg deg3'>{red[2]}</div>
+                  <div data-color="red" data-root={red[3]} onClick={this.root} onContextMenu={this.root} className='deg deg4'>{red[3]}</div>
                 </>
               }
             </div>
@@ -595,10 +644,10 @@ class Colorwheel extends Component {
                     className={preRoll[1][3][3] === 'root' ? 'deg deg4 selectedRoot' : 'deg deg4'}>{blue[3]}</div>
                 </> :
                 <> {/* E Db Bb G */}
-                  <div data-color="blue" data-root={blue[0]} onClick={this.root} className='deg deg1'>{blue[0]}</div>
-                  <div data-color="blue" data-root={blue[1]} onClick={this.root} className='deg deg2'>{blue[1]}</div>
-                  <div data-color="blue" data-root={blue[2]} onClick={this.root} className='deg deg3'>{blue[2]}</div>
-                  <div data-color="blue" data-root={blue[3]} onClick={this.root} className='deg deg4'>{blue[3]}</div>
+                  <div data-color="blue" data-root={blue[0]} onClick={this.root} onContextMenu={this.root} className='deg deg1'>{blue[0]}</div>
+                  <div data-color="blue" data-root={blue[1]} onClick={this.root} onContextMenu={this.root} className='deg deg2'>{blue[1]}</div>
+                  <div data-color="blue" data-root={blue[2]} onClick={this.root} onContextMenu={this.root} className='deg deg3'>{blue[2]}</div>
+                  <div data-color="blue" data-root={blue[3]} onClick={this.root} onContextMenu={this.root} className='deg deg4'>{blue[3]}</div>
                 </>
               }
             </div>
@@ -652,10 +701,10 @@ class Colorwheel extends Component {
                     className={preRoll[2][3][3] === 'root' ? 'deg deg4 selectedRoot' : 'deg deg4'}>{yellow[3]}</div>
                 </> :
                 <> {/* E Db Bb G */}
-                  <div data-color="yellow" data-root={yellow[0]} onClick={this.root} className='deg deg1'>{yellow[0]}</div>
-                  <div data-color="yellow" data-root={yellow[1]} onClick={this.root} className='deg deg2'>{yellow[1]}</div>
-                  <div data-color="yellow" data-root={yellow[2]} onClick={this.root} className='deg deg3'>{yellow[2]}</div>
-                  <div data-color="yellow" data-root={yellow[3]} onClick={this.root} className='deg deg4'>{yellow[3]}</div>
+                  <div data-color="yellow" data-root={yellow[0]} onClick={this.root} onContextMenu={this.root} className='deg deg1'>{yellow[0]}</div>
+                  <div data-color="yellow" data-root={yellow[1]} onClick={this.root} onContextMenu={this.root} className='deg deg2'>{yellow[1]}</div>
+                  <div data-color="yellow" data-root={yellow[2]} onClick={this.root} onContextMenu={this.root} className='deg deg3'>{yellow[2]}</div>
+                  <div data-color="yellow" data-root={yellow[3]} onClick={this.root} onContextMenu={this.root} className='deg deg4'>{yellow[3]}</div>
                 </>
               }
             </div>

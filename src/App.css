@@ -41,12 +41,15 @@
   background-color: rgba(34, 33, 33, 0.059);
 }
 .resetBtn {
-  width: 40px;
-  height: 40px;
+  position: absolute;
+  border-radius: 5px !important;
+  width: 50px;
+  height: 60px;
   background: rgba(24, 96, 151, 0);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0);
+  /* box-shadow: 0px 0px 4px rgba(0, 0, 0, 0); */
   border-radius: 10px;
   display: flex;
+  margin: -130px 0px 0 0;
   color: rgba(61, 61, 61, 0.212);
   justify-content: center;
   align-items: center;
@@ -1092,9 +1095,51 @@
   border: none;
   z-index: 10;
 }
-.writtenFunction {
+#writtenFunction {
   position: absolute;
   top: -200px;
+  left: -220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 800px;
+  width: 800px;
+  border-radius: 0;
+  box-shadow: none;
+}
+#writtenFunction div {
+  /* margin: 0 0 20px 0; */
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  padding: 15px;
+  font-weight: 600;
+}
+.redFunction {
+  font-size: 20px;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  /* transform: rotate(45deg); */
+  /* writing-mode: vertical-lr;
+  transform: scale(-1, -1); */
+  /* transform: rotate(-180deg); */
+}
+.blueFunction {
+  font-size: 20px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  /* transform: rotate(-25deg); */
+}
+.yellowFunction {
+  font-size: 20px;
+
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  /* transform: rotate(30deg); */
 }
 #functionOrange {
   position: absolute;
